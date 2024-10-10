@@ -15,5 +15,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    port: 8080,
+    allowedHosts: 'all', client: {webSocketURL: 'auto://0.0.0.0:0/ws'},
   }
 })
