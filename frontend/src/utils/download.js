@@ -8,6 +8,7 @@ export const download = (url, logger = null) => {
         request.onprogress = (e) => {
           const progress = (e.loaded / e.total) * 100;
           console.log('----onProgress: ', progress)
+          logger.value.progress = progress.toFixed(2)
         //   setState({ text: log, progress: progress.toFixed(2) });
         };
       }

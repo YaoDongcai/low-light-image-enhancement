@@ -4,26 +4,25 @@
             {{ loading.progress ? `${loading.text} - ${loading.progress}%` : loading.text }}
         </Loader>
         <div class="header">
-            <h1>YOLOv8 Object Detection App</h1>
+            <h1>YOLOv8在线检测</h1>
             <p>
-                YOLOv8 object detection application live on browser powered by
                 <code>onnxruntime-web</code>
             </p>
             <p>
-                Serving : <code class="code">{{ modelName }}</code>
+                模型名称： <code class="code">{{ modelName }}</code>
             </p>
         </div>
-
-        <div class="content">
-            <img ref="imageRef" src="#" alt="" :style="{ display: image ? 'block' : 'none' }" @load="onImageLoad" />
-            <canvas id="canvas" :width="modelInputShape[2]" :height="modelInputShape[3]" ref="canvasRef"></canvas>
-        </div>
-
         <input type="file" ref="inputImage" accept="image/*" style="display: none" @change="onImageChange" />
         <div class="btn-container">
             <button @click="openImage">Open local image</button>
             <button v-if="image" @click="closeImage">Close image</button>
         </div>
+        <div class="content">
+            <img ref="imageRef" src="#" alt="" :style="{ display: image ? 'block' : 'none' }" @load="onImageLoad" />
+            <canvas id="canvas" :width="modelInputShape[2]" :height="modelInputShape[3]" ref="canvasRef"></canvas>
+        </div>
+
+        
     </div>
 </template>
 <style lang="scss">
@@ -48,8 +47,6 @@
 
     img {
         width: 100%;
-        max-width: 720px;
-        max-height: 500px;
         border-radius: 10px;
     }
 
@@ -91,7 +88,7 @@ import { download } from "@/utils/download";
 
 // Refs
 const session = ref(null);
-const loading = ref({ text: "Loading OpenCV.js", progress: null });
+const loading = ref({ text: "正在加载模型", progress: null });
 const image = ref(null);
 const inputImage = ref(null);
 const imageRef = ref(null);
@@ -108,10 +105,8 @@ env.wasm.wasmPaths = {
   'ort-wasm-simd.wasm': './ort-wasm-simd.wasm',
   'ort-wasm-threaded.wasm': './ort-wasm-threaded.wasm'
 }
-// Methods
+// 初始化模型数据
 const initializeModel = async () => {
-    const baseModelURL = `/model`;
-
     // create session
     const arrBufNet = await download(
         `${modelName}`,
@@ -155,7 +150,7 @@ const onImageChange = (e) => {
         URL.revokeObjectURL(image.value);
         image.value = null;
     }
-
+    console.log('----e', e)
     const url = URL.createObjectURL(e.target.files[0]);
     imageRef.value.src = url;
     image.value = url;

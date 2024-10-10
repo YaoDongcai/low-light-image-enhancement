@@ -73,6 +73,9 @@ export const detectImage = async (
  */
 const preprocessing = (source, modelWidth, modelHeight) => {
   const mat = cv.imread(source); // read from img tag
+  source.width = mat.cols;
+  source.height = mat.rows;
+  console.log('----mat', mat.rows, mat.cols)
   const matC3 = new cv.Mat(mat.rows, mat.cols, cv.CV_8UC3); // new image matrix
   cv.cvtColor(mat, matC3, cv.COLOR_RGBA2BGR); // RGBA to BGR
 
